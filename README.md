@@ -34,7 +34,7 @@ $ getmyip -json 8.8.8.8
 {"ip": "8.8.8.8", "country": "United States", ...}
 ```
 
-An API key is optional (the anonymous tier needs none); pass `-key` or set `GETMYIP_API_KEY` for higher limits.
+An API key is optional (the anonymous tier needs none); pass `-key` or set `GETMYIP_API_KEY` for higher limits. Point the CLI at a self-hosted instance with `GETMYIP_BASE_URL`.
 
 ## Library
 

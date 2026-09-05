@@ -53,11 +53,12 @@ class ClientTest(unittest.TestCase):
         self.assertEqual(cm.exception.status, 429)
         self.assertEqual(cm.exception.error, "rate_limited")
 
-    def test_api_key_header(self):
+    def test_api_key_and_user_agent_headers(self):
         captured = {}
 
         def opener(req, timeout=None):
             captured["key"] = req.get_header("X-api-key")
+            captured["ua"] = req.get_header("User-agent")
             m = mock.MagicMock()
             m.__enter__.return_value = io.BytesIO(json.dumps(SAMPLE).encode())
             m.__exit__.return_value = False
@@ -66,6 +67,8 @@ class ClientTest(unittest.TestCase):
         with mock.patch("urllib.request.urlopen", side_effect=opener):
             Client(api_key="k1").me()
         self.assertEqual(captured["key"], "k1")
+        # дефолтный Python-urllib/* UA режется ботозащитой edge — клиент обязан слать свой
+        self.assertTrue(captured["ua"].startswith("getmyip-pro-python/"), captured["ua"])
 
 
 if __name__ == "__main__":

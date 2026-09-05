@@ -13,7 +13,7 @@ import urllib.request
 from dataclasses import dataclass, field, fields
 
 __all__ = ["DEFAULT_BASE_URL", "APIError", "Client", "Result"]
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 DEFAULT_BASE_URL = "https://api.getmyip.pro"
 

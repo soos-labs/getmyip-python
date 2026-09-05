@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "getmyip-pro"
-version = "0.1.1"
+version = "0.1.2"
 description = "Tiny, dependency-free Python client and CLI for the getmyip.pro IP geolocation API"
 readme = "README.md"
 license = { text = "MIT" }

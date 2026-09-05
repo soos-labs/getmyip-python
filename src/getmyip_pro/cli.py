@@ -19,7 +19,9 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("-key", default=os.environ.get("GETMYIP_API_KEY", ""), help="API key (or env GETMYIP_API_KEY)")
     a = p.parse_args(argv)
 
-    c = Client(api_key=a.key)
+    # GETMYIP_BASE_URL — свой инстанс (self-hosted) или мок в тестах
+    base = os.environ.get("GETMYIP_BASE_URL")
+    c = Client(api_key=a.key, **({"base_url": base} if base else {}))
     try:
         r = c.lookup(a.ip) if a.ip else c.me()
     except APIError as e:
