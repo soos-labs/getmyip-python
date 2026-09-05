@@ -46,9 +46,10 @@ class ClientTest(unittest.TestCase):
         self.assertIsInstance(rs[0], Result)
 
     def test_api_error(self):
-        with mock.patch("urllib.request.urlopen", side_effect=fake_urlopen({"error": "rate_limited"}, 429)):
-            with self.assertRaises(APIError) as cm:
-                Client().me()
+        err = fake_urlopen({"error": "rate_limited"}, 429)
+        # не parenthesized-with: файл должен парситься и на 3.9
+        with mock.patch("urllib.request.urlopen", side_effect=err), self.assertRaises(APIError) as cm:
+            Client().me()
         self.assertEqual(cm.exception.status, 429)
         self.assertEqual(cm.exception.error, "rate_limited")
 

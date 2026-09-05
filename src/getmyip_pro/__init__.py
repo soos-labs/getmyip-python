@@ -12,8 +12,8 @@ import urllib.parse
 import urllib.request
 from dataclasses import dataclass, field, fields
 
-__all__ = ["Client", "Result", "APIError", "DEFAULT_BASE_URL"]
-__version__ = "0.1.0"
+__all__ = ["DEFAULT_BASE_URL", "APIError", "Client", "Result"]
+__version__ = "0.1.1"
 
 DEFAULT_BASE_URL = "https://api.getmyip.pro"
 
@@ -49,7 +49,7 @@ class Result:
     extra: dict = field(default_factory=dict)
 
     @classmethod
-    def from_dict(cls, d: dict) -> "Result":
+    def from_dict(cls, d: dict) -> Result:
         known = {f.name for f in fields(cls)} - {"extra"}
         kw = {k: v for k, v in d.items() if k in known}
         extra = {k: v for k, v in d.items() if k not in known}
@@ -97,6 +97,6 @@ class Client:
         except urllib.error.HTTPError as e:
             try:
                 err = json.load(e).get("error", "")
-            except Exception:
+            except (ValueError, OSError):
                 err = ""
             raise APIError(e.code, err) from None

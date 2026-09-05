@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "getmyip-pro"
-version = "0.1.0"
+version = "0.1.1"
 description = "Tiny, dependency-free Python client and CLI for the getmyip.pro IP geolocation API"
 readme = "README.md"
 license = { text = "MIT" }
@@ -14,8 +14,14 @@ keywords = ["ip", "geolocation", "geoip", "asn", "whois"]
 classifiers = [
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Intended Audience :: Developers",
     "Topic :: Internet",
+    "Typing :: Typed",
 ]
 
 [project.urls]
@@ -25,3 +31,6 @@ Source = "https://github.com/soos-labs/getmyip-python"
 
 [project.scripts]
 getmyip = "getmyip_pro.cli:main"
+
+[tool.setuptools.package-data]
+getmyip_pro = ["py.typed"]
