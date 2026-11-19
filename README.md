@@ -2,8 +2,9 @@
 
 Tiny, dependency-free Python client **and CLI** for the [getmyip.pro](https://getmyip.pro) IP geolocation API — privacy-first (no logs, no trackers), with ip-api-compatible JSON.
 
-> One plan: free. 60 requests/min, 10,000/day, batch up to 100 IPs — no signup,
-> no key. Hit the ceiling? Email tech@getmyip.pro and we'll raise it for you.
+> Free anonymous lookups: 60 requests/min and 10,000/day, no signup or key.
+> Batch requests require an API key (up to 100 IPs on the free-key tier). If you
+> hit a limit, email tech@getmyip.pro.
 
 [![Test](https://github.com/soos-labs/getmyip-python/actions/workflows/test.yml/badge.svg)](https://github.com/soos-labs/getmyip-python/actions/workflows/test.yml)
 [![PyPI](https://img.shields.io/pypi/v/getmyip-pro)](https://pypi.org/project/getmyip-pro/)
@@ -44,7 +45,8 @@ from getmyip_pro import Client
 c = Client()                      # Client(api_key="...") to raise limits
 me = c.me()                       # your own IP
 r = c.lookup("8.8.8.8")           # any IPv4/IPv6
-rs = c.batch(["8.8.8.8", "1.1.1.1"])
+keyed = Client(api_key="YOUR_API_KEY")  # batch requires a key
+rs = keyed.batch(["8.8.8.8", "1.1.1.1"])
 
 print(r.country, r.org, r.asn)    # United States Google LLC 15169
 ```
@@ -52,6 +54,15 @@ print(r.country, r.org, r.asn)    # United States Google LLC 15169
 Errors raise `getmyip_pro.APIError` with `.status` and `.error` (e.g. `rate_limited` — see [limits](https://getmyip.pro/limits)).
 
 No dependencies: stdlib `urllib` only. Python 3.9+.
+
+## API contract
+
+The client calls `GET /v1/json` for the caller, `GET /v1/{ip}` for an IPv4 or
+IPv6 lookup, and `POST /v1/batch` for a batch. Anonymous requests default to 60
+per minute and 10,000 per day. Batch requests require an API key and allow up to
+100 IPs on the free-key tier or 1,000 on the Pro tier by default. Limits can be
+changed by service configuration. See the [current API documentation](https://docs.getmyip.pro)
+for response fields, errors, and the current limits.
 
 ## Related
 
