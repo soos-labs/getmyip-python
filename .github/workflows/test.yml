@@ -2,12 +2,13 @@ name: Test
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   pull_request: {}
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    # ubuntu-latest сейчас 26.04, а setup-python не публикует для него сборку 3.9.
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         python: ["3.9", "3.10", "3.11", "3.12", "3.13"]
