@@ -2,6 +2,8 @@
 
 Tiny, dependency-free Python client **and CLI** for the [getmyip.pro](https://getmyip.pro) IP geolocation API — privacy-first (no logs, no trackers), with ip-api-compatible JSON.
 
+Batch requests require an API key. The key issued in the dashboard accepts up to 1,000 IPs per request. Existing free-tier keys accept up to 100.
+
 > Anonymous lookups: 60 requests/min and 10,000/day, no key. Batch needs a key.
 > Sign in at https://getmyip.pro/login for one key: 600/min, 100,000/day,
 > batch up to 1,000 IPs. Revoke the current key to create another.
@@ -40,12 +42,15 @@ An API key is optional (the anonymous tier needs none); pass `-key` or set `GETM
 ## Library
 
 ```python
+import os
+
 from getmyip_pro import Client
 
 c = Client()                      # Client(api_key="...") to raise limits
 me = c.me()                       # your own IP
 r = c.lookup("8.8.8.8")           # any IPv4/IPv6
-rs = c.batch(["8.8.8.8", "1.1.1.1"])
+keyed = Client(api_key=os.environ["GETMYIP_API_KEY"])
+rs = keyed.batch(["8.8.8.8", "1.1.1.1"])
 
 print(r.country, r.org, r.asn)    # United States Google LLC 15169
 ```
